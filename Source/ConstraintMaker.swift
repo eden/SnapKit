@@ -136,9 +136,9 @@ public class ConstraintMaker {
         return constraintDescription
     }
     
-    internal class func prepareConstraints(view: View, file: String = "Unknown", line: UInt = 0, closure: @noescape (make: ConstraintMaker) -> Void) -> [Constraint] {
+    internal class func prepareConstraints(view: View, file: String = "Unknown", line: UInt = 0, closure: (_ make: ConstraintMaker) -> Void) -> [Constraint] {
         let maker = ConstraintMaker(view: view, file: file, line: line)
-        closure(make: maker)
+        closure(maker)
         
         let constraints = maker.constraintDescriptions.map { $0.constraint }
         for constraint in constraints {
@@ -148,10 +148,10 @@ public class ConstraintMaker {
         return constraints
     }
     
-    internal class func makeConstraints(view: View, file: String = "Unknown", line: UInt = 0, closure: @noescape (make: ConstraintMaker) -> Void) {
+    internal class func makeConstraints(view: View, file: String = "Unknown", line: UInt = 0, closure: (_ make: ConstraintMaker) -> Void) {
         view.translatesAutoresizingMaskIntoConstraints = false
         let maker = ConstraintMaker(view: view, file: file, line: line)
-        closure(make: maker)
+        closure(maker)
         
         let constraints = maker.constraintDescriptions.map { $0.constraint as! ConcreteConstraint }
         for constraint in constraints {
@@ -161,10 +161,10 @@ public class ConstraintMaker {
         }
     }
     
-    internal class func remakeConstraints(view: View, file: String = "Unknown", line: UInt = 0, closure: @noescape (make: ConstraintMaker) -> Void) {
+    internal class func remakeConstraints(view: View, file: String = "Unknown", line: UInt = 0, closure: (_ make: ConstraintMaker) -> Void) {
         view.translatesAutoresizingMaskIntoConstraints = false
         let maker = ConstraintMaker(view: view, file: file, line: line)
-        closure(make: maker)
+        closure(maker)
         
         self.removeConstraints(view: view)
         let constraints = maker.constraintDescriptions.map { $0.constraint as! ConcreteConstraint }
@@ -175,10 +175,10 @@ public class ConstraintMaker {
         }
     }
     
-    internal class func updateConstraints(view: View, file: String = "Unknown", line: UInt = 0, closure: @noescape (make: ConstraintMaker) -> Void) {
+    internal class func updateConstraints(view: View, file: String = "Unknown", line: UInt = 0, closure: (_ make: ConstraintMaker) -> Void) {
         view.translatesAutoresizingMaskIntoConstraints = false
         let maker = ConstraintMaker(view: view, file: file, line: line)
-        closure(make: maker)
+        closure(maker)
         
         let constraints = maker.constraintDescriptions.map { $0.constraint as! ConcreteConstraint}
         for constraint in constraints {

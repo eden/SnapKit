@@ -578,7 +578,7 @@ internal class ConstraintDescription: ConstraintDescriptionExtendable, Constrain
             if toLayoutAttributes.count > 1 {
                 let fromLayoutAttributes = self.fromItem.attributes.layoutAttributes
                 if toLayoutAttributes != fromLayoutAttributes {
-                    NSException(name: "Invalid Constraint" as NSExceptionName, reason: "Cannot constrain to multiple non identical attributes", userInfo: nil).raise()
+                    NSException(name: NSExceptionName(rawValue: "Invalid Constraint"), reason: "Cannot constrain to multiple non identical attributes", userInfo: nil).raise()
                     return self
                 }
                 other.attributes = ConstraintAttributes.None

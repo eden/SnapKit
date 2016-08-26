@@ -172,11 +172,11 @@ internal class ConcreteConstraint: Constraint {
         }
     }
     
-    private let fromItem: ConstraintItem
-    private let toItem: ConstraintItem
-    private let relation: ConstraintRelation
-    private let multiplier: Float
-    private var constant: Any {
+    fileprivate let fromItem: ConstraintItem
+    fileprivate let toItem: ConstraintItem
+    fileprivate let relation: ConstraintRelation
+    fileprivate let multiplier: Float
+    fileprivate var constant: Any {
         didSet {
             if let installInfo = self.installInfo {
                 for layoutConstraint in installInfo.layoutConstraints.allObjects as! [LayoutConstraint] {
@@ -186,7 +186,7 @@ internal class ConcreteConstraint: Constraint {
             }
         }
     }
-    private var priority: Float {
+    fileprivate var priority: Float {
         didSet {
             if let installInfo = self.installInfo {
                 for layoutConstraint in installInfo.layoutConstraints.allObjects as! [LayoutConstraint] {
@@ -196,9 +196,9 @@ internal class ConcreteConstraint: Constraint {
         }
     }
     
-    private let label: String?
+    fileprivate let label: String?
     
-    private var installInfo: ConcreteConstraintInstallInfo? = nil
+    fileprivate var installInfo: ConcreteConstraintInstallInfo? = nil
     
     override var layoutConstraints: [LayoutConstraint] {
         if installInfo == nil {
@@ -227,7 +227,7 @@ internal class ConcreteConstraint: Constraint {
         if self.toItem.view != nil {
             installOnView = closestCommonSuperviewFromView(self.fromItem.view, toView: self.toItem.view)
             if installOnView == nil {
-                NSException(name: "Cannot Install Constraint" as NSExceptionName, reason: "No common superview between views (@\(self.makerFile)#\(self.makerLine))", userInfo: nil).raise()
+                NSException(name: NSExceptionName(rawValue: "Cannot Install Constraint"), reason: "No common superview between views (@\(self.makerFile)#\(self.makerLine))", userInfo: nil).raise()
                 return []
             }
         } else {
@@ -237,7 +237,7 @@ internal class ConcreteConstraint: Constraint {
             } else {
                 installOnView = self.fromItem.view?.superview
                 if installOnView == nil {
-                    NSException(name: "Cannot Install Constraint" as NSExceptionName, reason: "Missing superview (@\(self.makerFile)#\(self.makerLine))", userInfo: nil).raise()
+                    NSException(name: NSExceptionName(rawValue: "Cannot Install Constraint"), reason: "Missing superview (@\(self.makerFile)#\(self.makerLine))", userInfo: nil).raise()
                     return []
                 }
             }
@@ -245,7 +245,7 @@ internal class ConcreteConstraint: Constraint {
         
         if let installedOnView = self.installInfo?.view {
             if installedOnView != installOnView {
-                NSException(name: "Cannot Install Constraint" as NSExceptionName, reason: "Already installed on different view. (@\(self.makerFile)#\(self.makerLine))", userInfo: nil).raise()
+                NSException(name: NSExceptionName(rawValue: "Cannot Install Constraint"), reason: "Already installed on different view. (@\(self.makerFile)#\(self.makerLine))", userInfo: nil).raise()
                 return []
             }
             return self.installInfo?.layoutConstraints.allObjects as? [LayoutConstraint] ?? []
@@ -389,16 +389,16 @@ internal class ConcreteConstraint: Constraint {
     
 }
 
-private struct ConcreteConstraintInstallInfo {
+fileprivate struct ConcreteConstraintInstallInfo {
     
     weak var view: View? = nil
     let layoutConstraints: NSHashTable<AnyObject>
     
 }
 
-private extension NSLayoutAttribute {
+fileprivate extension NSLayoutAttribute {
     
-    private func snp_constantForValue(_ value: Any?) -> CGFloat {
+    fileprivate func snp_constantForValue(_ value: Any?) -> CGFloat {
         // Float
         if let float = value as? Float {
             return CGFloat(float)
@@ -486,7 +486,7 @@ private extension NSLayoutAttribute {
     }
 }
 
-private func closestCommonSuperviewFromView(_ fromView: View?, toView: View?) -> View? {
+fileprivate func closestCommonSuperviewFromView(_ fromView: View?, toView: View?) -> View? {
     var views = Set<View>()
     var fromView = fromView
     var toView = toView
@@ -510,7 +510,7 @@ private func closestCommonSuperviewFromView(_ fromView: View?, toView: View?) ->
     return nil
 }
 
-private func ==(left: ConcreteConstraint, right: ConcreteConstraint) -> Bool {
+fileprivate func ==(left: ConcreteConstraint, right: ConcreteConstraint) -> Bool {
     return (left.fromItem == right.fromItem &&
             left.toItem == right.toItem &&
             left.relation == right.relation &&
